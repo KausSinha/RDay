@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rose Day Surprise</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    .envelope {
+      cursor: pointer;
+      font-size: 50px;
+      transition: transform 0.3s ease;
+    }
+    .envelope:hover {
+      transform: scale(1.1);
+    }
+    .rose {
+      display: none;
+      font-size: 100px;
+      margin-top: 20px;
+      animation: pop 0.5s ease;
+    }
+    .banner {
+      display: none;
+      font-size: 40px;
+      color: #e91e63;
+      margin-top: 20px;
+      animation: slideIn 1s ease;
+    }
+    @keyframes pop {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    @keyframes slideIn {
+      0% { opacity: 0; transform: translateY(-50px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="envelope" onclick="revealSurprise()">💌</div>
+  <div class="rose">🌹</div>
+  <div class="banner">Happy Rose Day Meri Beautiful Gulab</div>
+
+  <script>
+    function revealSurprise() {
+      const envelope = document.querySelector('.envelope');
+      const rose = document.querySelector('.rose');
+      const banner = document.querySelector('.banner');
+
+      // Hide the envelope
+      envelope.style.display = 'none';
+
+      // Show the rose and banner
+      rose.style.display = 'block';
+      banner.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
