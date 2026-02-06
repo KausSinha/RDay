@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rose Day Surprise</title>
+  <title>Happy Rose Day</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
       text-align: center;
-      background-color: #f9f9f9;
+      background: radial-gradient(circle at top, #ffffff 0%, #f8edf2 55%, #f2d6df 100%);
       margin: 0;
       padding: 0;
       display: flex;
@@ -16,56 +16,138 @@
       align-items: center;
       height: 100vh;
       flex-direction: column;
+      overflow: hidden;
     }
-    .envelope {
+    .intro {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+    .white-rose {
       cursor: pointer;
-      font-size: 50px;
-      transition: transform 0.3s ease;
+      font-size: 120px;
+      transition: transform 0.35s ease, filter 0.35s ease;
+      filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.15));
     }
-    .envelope:hover {
-      transform: scale(1.1);
+    .white-rose:hover {
+      transform: scale(1.08);
     }
-    .rose {
-      display: none;
-      font-size: 100px;
-      margin-top: 20px;
-      animation: pop 0.5s ease;
+    .intro-text {
+      font-size: 20px;
+      color: #8d5a66;
+      letter-spacing: 0.5px;
+      max-width: 420px;
+    }
+    .burst {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .burst.active {
+      opacity: 1;
+    }
+    .burst .rose {
+      position: absolute;
+      font-size: clamp(28px, 4vw, 46px);
+      animation: burst 1.8s ease-out forwards;
+      opacity: 0;
+      filter: drop-shadow(0 8px 12px rgba(165, 0, 40, 0.25));
     }
     .banner {
       display: none;
-      font-size: 40px;
-      color: #e91e63;
-      margin-top: 20px;
-      animation: slideIn 1s ease;
+      font-size: clamp(36px, 8vw, 92px);
+      color: #e4004f;
+      margin-top: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      animation: boom 1s ease-out forwards;
+      text-shadow: 0 12px 30px rgba(227, 0, 80, 0.35);
     }
-    @keyframes pop {
-      0% { transform: scale(0); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
+    .message {
+      display: none;
+      font-size: clamp(18px, 3vw, 26px);
+      color: #5b2b3b;
+      margin-top: 10px;
+      max-width: 540px;
+      line-height: 1.5;
+      animation: fadeUp 1.2s ease forwards;
+    }
+    .celebration {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1;
+    }
+    body.celebrate {
+      background: radial-gradient(circle at top, #fff 0%, #ffe3eb 40%, #f7b6c8 100%);
+    }
+    body.celebrate .intro {
+      display: none;
     }
     @keyframes slideIn {
       0% { opacity: 0; transform: translateY(-50px); }
       100% { opacity: 1; transform: translateY(0); }
     }
+    @keyframes burst {
+      0% { transform: translate(0, 0) scale(0.5) rotate(0deg); opacity: 0; }
+      30% { opacity: 1; }
+      100% { transform: translate(var(--x), var(--y)) scale(1.1) rotate(18deg); opacity: 0; }
+    }
+    @keyframes boom {
+      0% { transform: scale(0.2); opacity: 0; }
+      60% { transform: scale(1.08); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-  <div class="envelope" onclick="revealSurprise()">💌</div>
-  <div class="rose">🌹</div>
-  <div class="banner">Happy Rose Day Meri Beautiful Gulab</div>
+  <div class="intro">
+    <div class="white-rose" onclick="revealSurprise()" aria-label="White rose">🤍🌹</div>
+    <div class="intro-text">Tap the white rose to begin the bloom of love.</div>
+  </div>
+  <div class="burst" aria-hidden="true"></div>
+  <div class="celebration">
+    <div class="banner">Happy Rose Day</div>
+    <div class="message">
+      You are the reason every moment blossoms with warmth. May this day shower you with endless
+      love, sweet smiles, and petals of happiness that never stop falling.
+    </div>
+  </div>
 
   <script>
     function revealSurprise() {
-      const envelope = document.querySelector('.envelope');
-      const rose = document.querySelector('.rose');
-      const banner = document.querySelector('.banner');
+      const burst = document.querySelector('.burst');
+      const celebration = document.querySelector('.celebration');
 
-      // Hide the envelope
-      envelope.style.display = 'none';
+      document.body.classList.add('celebrate');
+      burst.classList.add('active');
+      celebration.style.display = 'flex';
 
-      // Show the rose and banner
-      rose.style.display = 'block';
-      banner.style.display = 'block';
+      burst.innerHTML = '';
+      const roses = 30;
+      for (let i = 0; i < roses; i += 1) {
+        const rose = document.createElement('span');
+        rose.className = 'rose';
+        rose.textContent = '🌹';
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 120 + Math.random() * 260;
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+        rose.style.setProperty('--x', `${x}px`);
+        rose.style.setProperty('--y', `${y}px`);
+        rose.style.left = '50%';
+        rose.style.top = '45%';
+        rose.style.animationDelay = `${Math.random() * 0.4}s`;
+        burst.appendChild(rose);
+      }
     }
   </script>
 </body>
